@@ -2,10 +2,25 @@
 #include <cctype>
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
 #include <vector>
 #include <cmath>
 
 using namespace std;
+
+// make a new mergeArrays functions!!
+vector<int> mergeArrays(vector<vector<int>>& arr){
+    vector<int> result;
+
+    for(const auto& v : arr){
+        for(int val : v){
+            result.push_back(val);
+        }
+    }
+    sort(result.begin(), result.end());
+    return result;
+}
+
 
 int main(int argc, char* argv[]){
     if(argc != 4){
@@ -32,7 +47,7 @@ int main(int argc, char* argv[]){
                 cout << "error while opening the file!" << endl;
                 return 1;
             }
-
+            cout << entry.path() << endl;
             vector<int> numberArr;
             string line;
 
@@ -45,6 +60,7 @@ int main(int argc, char* argv[]){
         }
         i++;
     }
+
     for (int i = 0; i < arrays.size(); i++) {
         for (int num : arrays[i]) {
             cout << num << " ";
@@ -52,6 +68,21 @@ int main(int argc, char* argv[]){
         cout << endl;
         cout << "-- (" << i << ".txt) --" << endl;
     }
+
+    ofstream outputFile;
+    outputFile.open(outputPath);
+
+    if(outputFile.fail()){
+        cout << "error opening file!" << endl;
+        return 1;
+    }
+
+    vector<int> mergedArr = mergeArrays(arrays);
+    for(int v : mergedArr){
+        outputFile << v << endl;
+    }
+
+    outputFile.close();
 
     return 0;
 }
