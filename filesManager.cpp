@@ -32,3 +32,14 @@ void inputFileCheck(string inputPath){
         exit(1);
     }
 }
+
+vector<string> sortFiles(string inputDirectoryPath){
+    vector<string> folders;
+    for(const auto& entry : filesystem::directory_iterator(inputDirectoryPath)){
+        if(entry.is_regular_file()){
+            folders.push_back(entry.path());
+        }
+    } 
+    sort(folders.begin(), folders.end());
+    return folders;
+}
