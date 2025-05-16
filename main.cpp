@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
 
     vector<vector<int>> arrays = makeArrays(k, inputPath, filesNum);
     vector<int> mergedArr = mergeKArrays(arrays);
+    
     putToOutFile(outputPath, mergedArr);
     
     auto endTime = chrono::high_resolution_clock::now();
