@@ -1,5 +1,6 @@
 #include "array.hpp"
 
+
 vector<vector<int>> makeArrays(int arrNum, string inputPath, int filesNum){
     vector<vector<int>> finalArray;
     int fileIndex = 0;
@@ -9,28 +10,31 @@ vector<vector<int>> makeArrays(int arrNum, string inputPath, int filesNum){
         exit(1);
     }
 
-    for(const auto& entry : filesystem::directory_iterator(inputPath)){
-        if(entry.is_regular_file()){
-            if(fileIndex >= arrNum){
-                break;
-            }
-            ifstream inputFile;
-            inputFile.open(entry.path());  
+    vector<string> sortedFiles = sortFiles(inputPath);
 
-            if(inputFile.fail()){
-                cout << "error while opening the file!" << endl;
-                exit(1);
-            }
-            vector<int> numberArr;
-            string line;
-            // cout << entry << endl;
-            while(getline(inputFile, line)){
-                int number = stoi(line);
-                numberArr.push_back(number);
-            }   
-            finalArray.push_back(numberArr);
-            inputFile.close();
+    for(const auto& entry : sortedFiles){
+        if(fileIndex >= arrNum){
+            break;
         }
+        ifstream inputFile;
+        inputFile.open(entry);  
+
+        if(inputFile.fail()){
+            cout << "error while opening the file!" << endl;
+            exit(1);
+        }
+        vector<int> numberArr;
+        string line;
+
+        // cout << entry << endl;
+
+        while(getline(inputFile, line)){
+            int number = stoi(line);
+            numberArr.push_back(number);
+        }   
+        finalArray.push_back(numberArr);
+        inputFile.close();
+        
         fileIndex++;
     }
     return finalArray;
@@ -60,6 +64,7 @@ vector<int> mergeKArrays(vector<vector<int>>& arrays){
             int nextValue = arrays[arrayIndex][elemIndex + 1];
             minHeap.push(MinHeapElement(nextValue, arrayIndex, elemIndex + 1));
         }
+        
     }
     return mergedArr;
 }
